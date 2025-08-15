@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started with Modern Web Development</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --border-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #64748b;
+            --accent-primary: #0ea5e9;
+            --accent-secondary: #8b5cf6;
+            --border-color: #e2e8f0;
+            --card-bg: rgba(0, 0, 0, 0.03);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, var(--accent-primary)20 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, var(--accent-secondary)20 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, var(--accent-primary)15 0%, transparent 50%);
+            opacity: 0.1;
+            z-index: -1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-30px, -30px) rotate(120deg); }
+            66% { transform: translate(30px, -20px) rotate(240deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            background: var(--card-bg);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .blog-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .blog-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .blog-content h2 {
+            font-size: 1.8rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        .blog-content p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .blog-content ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .blog-content a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .blog-content a:hover {
+            color: var(--accent-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">YourName</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#blog">Blog</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark</span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <article class="blog-content">
+                <h1>Getting Started with Modern Web Development</h1>
+                <div class="blog-meta">
+                    <span>Jan 15, 2025</span>
+                    <span>By Your Name</span>
+                </div>
+                <p>Modern web development has evolved significantly in recent years, driven by advancements in frameworks, tools, and deployment strategies. Whether you're a beginner or a seasoned developer, staying updated with the latest trends is crucial for building fast, scalable, and user-friendly applications. In this post, we'll explore the key technologies and practices shaping web development in 2025.</p>
+                
+                <h2>The Rise of Modern Frameworks</h2>
+                <p>Frameworks like <a href="https://react.dev">React</a>, <a href="https://vuejs.org">Vue.js</a>, and <a href="https://svelte.dev">Svelte</a> have become staples in the web development ecosystem. React, with its component-based architecture, continues to dominate due to its flexibility and vast ecosystem. Vue offers a balance of simplicity and power, while Svelte’s compile-time approach results in highly performant applications.</p>
+                <ul>
+                    <li><strong>React:</strong> Ideal for large-scale applications with complex state management.</li>
+                    <li><strong>Vue.js:</strong> Great for rapid prototyping and smaller projects.</li>
+                    <li><strong>Svelte:</strong> Perfect for performance-critical applications with minimal runtime overhead.</li>
+                </ul>
+
+                <h2>Serverless Architectures</h2>
+                <p>Serverless computing has transformed how we deploy web applications. Platforms like <a href="https://aws.amazon.com/lambda">AWS Lambda</a>, <a href="https://vercel.com">Vercel</a>, and <a href="https://netlify.com">Netlify</a> allow developers to focus on code without managing servers. Serverless architectures offer scalability, cost-efficiency, and simplified deployment, making them ideal for modern web apps.</p>
+                <p>Key benefits include:</p>
+                <ul>
+                    <li>Automatic scaling based on demand.</li>
+                    <li>Pay-as-you-go pricing models.</li>
+                    <li>Simplified CI/CD pipelines.</li>
+                </ul>
+
+                <h2>Tools for Productivity</h2>
+                <p>Modern web development relies heavily on tools to streamline workflows. Tools like <a href="https://vitejs.dev">Vite</a> for blazing-fast development servers, <a href="https://tailwindcss.com">Tailwind CSS</a> for utility-first styling, and <a href="https://www.typescriptlang.org">TypeScript</a> for type-safe JavaScript have become industry standards.</p>
+                <p>Additionally, package managers like <a href="https://pnpm.io">pnpm</a> and build tools like <a href="https://esbuild.github.io">esbuild</a> are gaining traction for their speed and efficiency.</p>
+
+                <h2>Best Practices for 2025</h2>
+                <p>To succeed in modern web development, adopt these best practices:</p>
+                <ul>
+                    <li><strong>Performance Optimization:</strong> Use lazy loading, code splitting, and modern image formats like WebP.</li>
+                    <li><strong>Accessibility:</strong> Ensure your applications are WCAG-compliant for inclusive user experiences.</li>
+                    <li><strong>Testing:</strong> Implement unit, integration, and end-to-end tests using tools like <a href="https://jestjs.io">Jest</a> and <a href="https://www.cypress.io">Cypress</a>.</li>
+                    <li><strong>Version Control:</strong> Master Git workflows for collaboration and code management.</li>
+                </ul>
+
+                <h2>Conclusion</h2>
+                <p>Modern web development is an exciting field with endless possibilities. By leveraging the right frameworks, adopting serverless architectures, and using efficient tools, you can build applications that are fast, scalable, and user-friendly. Stay curious, keep learning, and experiment with new technologies to stay ahead in this ever-evolving industry.</p>
+                <p>Ready to start your web development journey? Check out resources like <a href="https://developer.mozilla.org">MDN Web Docs</a> and start building today!</p>
+            </article>
+        </div>
+    </main>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const body = document.body;
+
+        // Check for saved theme or default to dark
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        body.setAttribute('data-theme', currentTheme);
+        updateThemeButton(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+        });
+
+        function updateThemeButton(theme) {
+            if (theme === 'dark') {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+            } else {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        }
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+
+        // Initialize with opacity 0 for smooth loading
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease-in-out';
+    </script>
+</body>
+</html>
