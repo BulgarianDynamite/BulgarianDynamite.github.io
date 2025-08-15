@@ -3,38 +3,539 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Da Dynamite</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Your Name - Portfolio</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --border-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #64748b;
+            --accent-primary: #0ea5e9;
+            --accent-secondary: #8b5cf6;
+            --border-color: #e2e8f0;
+            --card-bg: rgba(0, 0, 0, 0.03);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, var(--accent-primary)20 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, var(--accent-secondary)20 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, var(--accent-primary)15 0%, transparent 50%);
+            opacity: 0.1;
+            z-index: -1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-30px, -30px) rotate(120deg); }
+            66% { transform: translate(30px, -20px) rotate(240deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            background: var(--card-bg);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Main Content */
+        main {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Homepage Styles */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Blog Styles */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .blog-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent-primary);
+        }
+
+        .blog-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .blog-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .read-more {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: var(--accent-secondary);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hidden sections */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+    </style>
 </head>
-<body class="light">
-    <header>
-        <h1>Da Dynamite</h1>
-        <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="blogs.html">Blogs</a>
-        </nav>
-        <button class="mode-toggle" onclick="toggleMode()">🌙</button>
-    </header>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">YourName</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="blog">Blog</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark</span>
+            </button>
+        </div>
+    </nav>
 
-    <div class="container">
-        <section class="intro">
-            <h2>Welcome to Da Dynamite</h2>
-            <div class="tagline">Windows Rocks</div>
-            <p>
-                Hey there! This is my personal GitHub.io page, where I showcase my projects and experiments.
-                Check out my <a href="https://github.com/yourusername">GitHub profile</a> to see my latest work!
-            </p>
-            <p>
-                Explore my <a href="blogs.html">blogs</a> for insights and updates!
-            </p>
+    <main>
+        <!-- Homepage -->
+        <section id="home" class="page active">
+            <div class="container">
+                <div class="hero">
+                    <h1>Hello, I'm Your Name</h1>
+                    <p>Full Stack Developer & Creative Problem Solver</p>
+                    <div class="cta-buttons">
+                        <a href="#" class="btn btn-primary" data-page="blog">View My Blog</a>
+                        <a href="#" class="btn btn-secondary">Contact Me</a>
+                    </div>
+                </div>
+            </div>
         </section>
-    </div>
 
-    <footer>
-        <p>&copy; 2025 Your Name. All rights reserved.</p>
-    </footer>
+        <!-- Blog Page -->
+        <section id="blog" class="page">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 3rem; font-size: 3rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">My Blog</h2>
+                
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <h3>Getting Started with Modern Web Development</h3>
+                        <p>Explore the latest trends and technologies in web development, from React to serverless architectures.</p>
+                        <div class="blog-meta">
+                            <span>Jan 15, 2025</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </article>
 
-    <script src="scripts.js"></script>
+                    <article class="blog-card">
+                        <h3>The Future of AI in Software Development</h3>
+                        <p>How artificial intelligence is reshaping the way we write, test, and deploy code in 2025.</p>
+                        <div class="blog-meta">
+                            <span>Jan 12, 2025</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <h3>Building Scalable Applications</h3>
+                        <p>Best practices for creating applications that can grow with your user base and business needs.</p>
+                        <div class="blog-meta">
+                            <span>Jan 08, 2025</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <h3>CSS Grid vs Flexbox: When to Use What</h3>
+                        <p>A comprehensive guide to choosing the right layout method for your web projects.</p>
+                        <div class="blog-meta">
+                            <span>Jan 05, 2025</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <h3>Performance Optimization Tips</h3>
+                        <p>Practical strategies to make your websites faster and more efficient for better user experience.</p>
+                        <div class="blog-meta">
+                            <span>Jan 02, 2025</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <h3>Version Control Best Practices</h3>
+                        <p>Master Git workflows and collaboration techniques for better project management.</p>
+                        <div class="blog-meta">
+                            <span>Dec 28, 2024</span>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const body = document.body;
+
+        // Check for saved theme or default to dark
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        body.setAttribute('data-theme', currentTheme);
+        updateThemeButton(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+        });
+
+        function updateThemeButton(theme) {
+            if (theme === 'dark') {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+            } else {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            }
+        }
+
+        // Page Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const ctaButtons = document.querySelectorAll('[data-page]');
+
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.getElementById(pageId).classList.add('active');
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+
+        ctaButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                if (button.hasAttribute('data-page')) {
+                    e.preventDefault();
+                    const pageId = button.getAttribute('data-page');
+                    showPage(pageId);
+                }
+            });
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+
+        // Initialize with opacity 0 for smooth loading
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease-in-out';
+    </script>
 </body>
 </html>
